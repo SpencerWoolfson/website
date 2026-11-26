@@ -11,7 +11,7 @@ Plain HTML + one stylesheet. No build step.
 
 ## Edit
 
-Open the `.html` file, copy an existing `<li>` block in the right list, change the text. Content source of truth: [`Spencer_Woolfson_Master.md`](Spencer_Woolfson_Master.md).
+Open the `.html` file, copy an existing `<li>` block in the right list, change the text. Content source of truth: `Spencer_Woolfson_Master.md`, kept in this folder but not in the repo (it has private notes; see `.gitignore`).
 
 ## Preview
 
@@ -24,6 +24,6 @@ Then open http://localhost:8765.
 ## Still to do before going live
 
 - [x] Save the portrait as `photo.jpg` here and point `index.html` at it (resized to 600×800, location metadata stripped).
-- [ ] Put the folder on GitHub and turn on GitHub Pages.
+- [x] Put the folder on GitHub and turn on GitHub Pages (public repo `SpencerWoolfson/website`).
 - [ ] Point spencerwoolfson.com's DNS (managed at WordPress.com) at GitHub Pages.
 - [ ] Only after the new site is live: stop the WordPress.com plan from renewing, keep the domain.

@@ -13,3 +13,6 @@
 # Secrets
 .env
 .env.*
+
+# Private master record: stays local, never committed
+Spencer_Woolfson_Master.md
