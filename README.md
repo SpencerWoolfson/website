@@ -1,0 +1,29 @@
+# spencerwoolfson.com — new site (draft)
+
+Plain HTML + one stylesheet. No build step.
+
+| File | Page |
+|---|---|
+| `index.html` | About (home) |
+| `research.html` | Papers, talks, projects |
+| `cv.html` | Education, teaching, skills |
+| `style.css` | All styling, light and dark mode |
+
+## Edit
+
+Open the `.html` file, copy an existing `<li>` block in the right list, change the text. Content source of truth: [`Spencer_Woolfson_Master.md`](Spencer_Woolfson_Master.md).
+
+## Preview
+
+```bash
+cd ~/Desktop/Work/Webcite && python3 -m http.server 8765
+```
+
+Then open http://localhost:8765.
+
+## Still to do before going live
+
+- [ ] Save the portrait as `photo.jpg` here and point `index.html` at it (it still loads from the WordPress site).
+- [ ] Put the folder on GitHub and turn on GitHub Pages.
+- [ ] Point spencerwoolfson.com's DNS (managed at WordPress.com) at GitHub Pages.
+- [ ] Only after the new site is live: stop the WordPress.com plan from renewing, keep the domain.
