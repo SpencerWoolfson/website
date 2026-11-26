@@ -22,7 +22,7 @@ before(async () => {
   await write("index.html", "<p>home</p>");
   await write("style.css", "body{}");
   await write("secret.md", "private");
-  await write("notes/older.md", "---\ntitle: Older\ndate: 2026-01-02\n---\n\nText.");
+  await write("notes/older.md", "---\ntitle: Older\ndate: 2026-01-02\n---\n\nText :by[from AI]{ai}.");
   await write("notes/newer.md", "---\ntitle: Newer <b>\ndate: 2026-03-04\ndescription: About $x$.\n---\n\nHas $x^2$.");
   await write("notes/wip.md", "---\ntitle: WIP\ndate: 2026-05-06\ndraft: true\n---\n\nBroken $\\frac{$ math.");
 });
@@ -68,6 +68,8 @@ test("notes index is newest first, escapes titles, and loads KaTeX only where ne
   assert.ok(!older.includes("katex.min.css"));
   assert.ok(newer.includes('<a href="/notes.html" aria-current="true">Notes</a>'));
   assert.ok(newer.includes('<div class="post-body notemark">') && newer.includes("/assets/notemark.css"));
+  assert.ok(older.includes('class="nm-by-toggle"'), "toggle on notes with authorship marks");
+  assert.ok(!newer.includes('class="nm-by-toggle"'), "no toggle on notes without marks");
 });
 
 test("feed lists published notes only", async () => {

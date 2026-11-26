@@ -74,7 +74,7 @@ colour and what it is used for. The rest of the site uses the colours in `style.
 
 ## How the site uses notemark
 
-- `package.json` pins a tagged release: `"notemark": "github:SpencerWoolfson/notemark#v0.2.0"`.
+- `package.json` pins a tagged release: `"notemark": "github:SpencerWoolfson/notemark#v0.3.2"`.
   To upgrade, tag a release in notemark, change the tag here, run `npm install`, commit.
 - To try unreleased notemark changes locally: `npm install ../notemark`, then put the
   pinned version back (`npm install github:SpencerWoolfson/notemark#vX.Y.Z`) before committing.

@@ -74,3 +74,18 @@ Omitted in this template.
 theorem add_comm' (a b : Nat) : a + b = b + a := by
   omega
 ```
+
+## Authorship
+
+Text written by AI is marked; unmarked text is mine. Marks are hidden until a
+reader presses "Show authorship" under the title.
+
+:::by{ai}
+This paragraph was drafted by an AI assistant.
+:::
+
+:::proof{by=ai}
+Theorem and proof blocks take `by=ai` next to their id.
+:::
+
+A phrase can be marked inline: :by[this clause came from Claude]{ai}.

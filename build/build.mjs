@@ -78,6 +78,7 @@ async function loadNote(file, { relPath, drafts }) {
       draft: meta.draft === true,
       html: compiled.html,
       hasMath: compiled.hasMath,
+      hasAuthorship: compiled.hasAuthorship,
     },
     errors: [...errors, ...compiled.errors],
     warnings: compiled.warnings,

@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "gray-matter": "4.0.3",
-    "notemark": "github:SpencerWoolfson/notemark#v0.2.0"
+    "notemark": "github:SpencerWoolfson/notemark#v0.3.2"
   }
 }

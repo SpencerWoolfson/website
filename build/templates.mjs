@@ -2,6 +2,7 @@
 // hand-written pages (index.html etc.) so generated pages look identical.
 
 import { SITE, NAV } from "./config.mjs";
+import { authorshipToggle } from "notemark";
 
 export function escapeHtml(text) {
   return String(text)
@@ -87,7 +88,9 @@ export function notePage(note) {
   const body = `${draft}<article class="post">
   <header class="post-header">
     <h1>${escapeHtml(note.title)}</h1>
-    <p class="post-date muted"><time datetime="${isoDate(note.date)}">${DATE_LONG.format(note.date)}</time>${updated}</p>
+    <p class="post-date muted"><time datetime="${isoDate(note.date)}">${DATE_LONG.format(note.date)}</time>${updated}</p>${
+      note.hasAuthorship ? `\n    <p class="post-authorship">Parts of this note were written by AI. ${authorshipToggle()}</p>` : ""
+    }
   </header>
   <div class="post-body notemark">
 ${note.html}

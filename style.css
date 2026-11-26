@@ -303,6 +303,8 @@ p { margin: 0 0 1rem; }
 
 .post-header { margin-bottom: 2rem; }
 .post-date { font-family: var(--sans); font-size: 0.9rem; margin: 0.6rem 0 0; }
+.post-authorship { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); margin: 0.75rem 0 0; }
+.post-authorship .nm-by-toggle { margin-left: 0.35rem; color: var(--text); }
 
 /* Headings inside a note read as headings, not as the small section labels used elsewhere */
 .post-body h2 {
