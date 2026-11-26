@@ -26,4 +26,4 @@ Then open http://localhost:8765.
 - [x] Save the portrait as `photo.jpg` here and point `index.html` at it (resized to 600×800, location metadata stripped).
 - [x] Put the folder on GitHub and turn on GitHub Pages (public repo `SpencerWoolfson/website`).
 - [x] Point spencerwoolfson.com's DNS (managed at WordPress.com) at GitHub Pages (apex A/AAAA to GitHub, `www` CNAME to spencerwoolfson.github.io; `CNAME` file in repo).
-- [ ] Only after the new site is live: stop the WordPress.com plan from renewing, keep the domain.
+- [x] Only after the new site is live: stop the WordPress.com plan from renewing, keep the domain. (Personal plan auto-renew off 2026-11-25; it runs out 2027-07-12. The domain registration, €13/yr, still auto-renews, and its DNS stays at WordPress.com.)
