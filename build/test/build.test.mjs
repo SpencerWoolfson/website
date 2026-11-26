@@ -38,6 +38,8 @@ test("published build: only allowlisted files, notes, index, feed", async () => 
   await fs.access(path.join(out, "notes/older/index.html"));
   await fs.access(path.join(out, "notes/newer/index.html"));
   await fs.access(path.join(out, "assets/katex/katex.min.css"));
+  const notemarkCss = await fs.readFile(path.join(out, "assets/notemark.css"), "utf8");
+  assert.ok(notemarkCss.includes("--nm-code-keyword"), "palette stylesheet generated");
   await assert.rejects(fs.access(path.join(out, "secret.md")), "files outside the allowlist are never copied");
   await assert.rejects(fs.access(path.join(out, "notes/newer.md")), "note sources are not published");
   await assert.rejects(fs.access(path.join(out, "notes/wip/index.html")), "drafts are not published");
@@ -65,6 +67,7 @@ test("notes index is newest first, escapes titles, and loads KaTeX only where ne
   assert.ok(newer.includes("katex.min.css"));
   assert.ok(!older.includes("katex.min.css"));
   assert.ok(newer.includes('<a href="/notes.html" aria-current="true">Notes</a>'));
+  assert.ok(newer.includes('<div class="post-body notemark">') && newer.includes("/assets/notemark.css"));
 });
 
 test("feed lists published notes only", async () => {

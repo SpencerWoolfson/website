@@ -3,6 +3,8 @@
 //   - compiles every notes/*.md with notemark into _site/notes/<slug>/index.html
 //   - writes the Notes index (notes.html) and the Atom feed (feed.xml)
 //   - copies KaTeX's stylesheet and fonts (the exact version notemark renders with)
+//   - writes assets/notemark.css from the site palettes (build/palettes/), failing if any
+//     colour role is below WCAG AA contrast
 //
 // Usage:
 //   node build/build.mjs            published notes only (what goes live)
@@ -15,7 +17,7 @@ import path from "node:path";
 import matter from "gray-matter";
 
 import { ROOT, STATIC_FILES } from "./config.mjs";
-import { compile, katexAssets } from "notemark";
+import { compile, katexAssets, stylesheet, loadPalette } from "notemark";
 import { MACROS } from "./macros.mjs";
 import { notePage, notesIndexPage, atomFeed } from "./templates.mjs";
 
@@ -129,9 +131,23 @@ export async function build({
     }
   }
 
+  // 3. Palette stylesheet: every colour role must pass WCAG AA (notemark checks it)
+  const palettesDir = path.join(path.dirname(new URL(import.meta.url).pathname), "palettes");
+  let notemarkCss = "";
+  try {
+    const theme = stylesheet({
+      light: loadPalette(path.join(palettesDir, "site-light.json")),
+      dark: loadPalette(path.join(palettesDir, "site-dark.json")),
+    });
+    notemarkCss = theme.css;
+    errors.push(...theme.problems.map((p) => `build/palettes  ${p}`));
+  } catch (e) {
+    errors.push(`build/palettes  ${e.message}`);
+  }
+
   if (errors.length) return { ok: false, errors, warnings, notes };
 
-  // 3. Write the site from scratch
+  // 4. Write the site from scratch
   await fs.rm(outDir, { recursive: true, force: true });
   await fs.mkdir(outDir, { recursive: true });
   for (const f of staticFiles) {
@@ -147,7 +163,10 @@ export async function build({
   // The feed only ever lists published notes, even in a drafts build.
   await fs.writeFile(path.join(outDir, "feed.xml"), atomFeed(notes.filter((n) => !n.draft)));
 
-  // 4. KaTeX stylesheet + fonts, from the exact KaTeX version notemark renders with
+  await fs.mkdir(path.join(outDir, "assets"), { recursive: true });
+  await fs.writeFile(path.join(outDir, "assets", "notemark.css"), notemarkCss);
+
+  // 5. KaTeX stylesheet + fonts, from the exact KaTeX version notemark renders with
   const katexOut = path.join(outDir, "assets", "katex");
   await fs.mkdir(path.join(katexOut, "fonts"), { recursive: true });
   await fs.copyFile(katexAssets.stylesheet, path.join(katexOut, "katex.min.css"));

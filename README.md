@@ -65,9 +65,16 @@ The build fails with file and line on any notemark error, on bad front matter, o
 missing allowlisted file. Drafts never block publishing. Shared LaTeX macros for all notes
 are in [`build/macros.mjs`](build/macros.mjs).
 
+**Colours.** Inside notes, colours come from two terminal colour schemes,
+[`build/palettes/site-light.json`](build/palettes/site-light.json) and
+[`site-dark.json`](build/palettes/site-dark.json) (same format as Windows Terminal / iTerm
+themes; slots and roles are in notemark's README). The build turns them into
+`/assets/notemark.css` and **fails if any colour drops below WCAG AA contrast**, naming the
+colour and what it is used for. The rest of the site uses the colours in `style.css`.
+
 ## How the site uses notemark
 
-- `package.json` pins a tagged release: `"notemark": "github:SpencerWoolfson/notemark#v0.1.0"`.
+- `package.json` pins a tagged release: `"notemark": "github:SpencerWoolfson/notemark#v0.2.0"`.
   To upgrade, tag a release in notemark, change the tag here, run `npm install`, commit.
 - To try unreleased notemark changes locally: `npm install ../notemark`, then put the
   pinned version back (`npm install github:SpencerWoolfson/notemark#vX.Y.Z`) before committing.

@@ -1,0 +1,22 @@
+{
+  "name": "spencerwoolfson.com light",
+  "background": "#fbfaf7",
+  "foreground": "#1d1c1a",
+  "selectionBackground": "#f3e4df",
+  "black": "#1d1c1a",
+  "red": "#a3261b",
+  "green": "#2f6a31",
+  "yellow": "#7f5b00",
+  "blue": "#8a2c1f",
+  "purple": "#6d3a8f",
+  "cyan": "#1f6470",
+  "white": "#f2efe8",
+  "brightBlack": "#6b675f",
+  "brightRed": "#b8382c",
+  "brightGreen": "#3a7a3c",
+  "brightYellow": "#8f6a00",
+  "brightBlue": "#a03a2b",
+  "brightPurple": "#7d4aa0",
+  "brightCyan": "#287482",
+  "brightWhite": "#fbfaf7"
+}

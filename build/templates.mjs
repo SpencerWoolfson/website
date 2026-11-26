@@ -24,9 +24,10 @@ const FONTS =
  * @param {string} [o.nav]        key of the current nav item ("notes")
  * @param {"page"|"true"} [o.current]  aria-current value for that item
  * @param {boolean} [o.math]      include the KaTeX stylesheet
+ * @param {boolean} [o.notemark]  include the notemark palette stylesheet
  * @param {string} [o.canonical]  absolute URL of this page
  */
-export function page({ title, description, body, nav, current = "page", math = false, canonical }) {
+export function page({ title, description, body, nav, current = "page", math = false, notemark = false, canonical }) {
   const navLinks = NAV.map((item) => {
     const cur = item.key && item.key === nav ? ` aria-current="${current}"` : "";
     return `        <a href="${item.href}"${cur}>${escapeHtml(item.label)}</a>`;
@@ -46,6 +47,7 @@ ${canonical ? `  <link rel="canonical" href="${escapeHtml(canonical)}">\n` : ""}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="${FONTS}" rel="stylesheet">
 ${math ? `  <link rel="stylesheet" href="/assets/katex/katex.min.css">\n` : ""}  <link rel="stylesheet" href="/style.css">
+${notemark ? `  <link rel="stylesheet" href="/assets/notemark.css">\n` : ""}
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -87,7 +89,7 @@ export function notePage(note) {
     <h1>${escapeHtml(note.title)}</h1>
     <p class="post-date muted"><time datetime="${isoDate(note.date)}">${DATE_LONG.format(note.date)}</time>${updated}</p>
   </header>
-  <div class="post-body">
+  <div class="post-body notemark">
 ${note.html}
   </div>
 </article>
@@ -99,6 +101,7 @@ ${note.html}
     nav: "notes",
     current: "true",
     math: note.hasMath,
+    notemark: true,
     canonical: `${SITE.url}/notes/${note.slug}/`,
   });
 }
