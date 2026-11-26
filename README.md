@@ -1,14 +1,15 @@
 # spencerwoolfson.com
 
-Hand-written HTML pages, plus **Notes**: posts written in our own extended Markdown
-and compiled to HTML by the code in [`build/`](build/).
+Hand-written HTML pages, plus **Notes**: posts written in
+[notemark](https://github.com/SpencerWoolfson/notemark), our Markdown for mathematical
+writing, and built into pages by the code in [`build/`](build/).
 
 | Path | What it is |
 |---|---|
 | `index.html`, `research.html`, `formalization.html`, `teaching.html`, `cv.html` | Hand-written pages. Edit the HTML directly. |
 | `style.css` | All styling, light and dark mode. |
 | `notes/*.md` | Notes. One file per note; the file name becomes the URL `/notes/<name>/`. |
-| `build/` | The notes compiler: Markdown pipeline, our extensions, templates, tests. |
+| `build/` | Site build: compiles notes with notemark, templates, Notes index, feed, tests. |
 | `_site/` | Build output (not in git). This is exactly what gets published. |
 
 `Spencer_Woolfson_Master.md` (the private master record) lives in this folder but is
@@ -42,8 +43,13 @@ to the site. **A new hand-written page or image must be added there**, or it won
 
 ## Writing a note
 
-Copy [`notes/example-note.md`](notes/example-note.md): it shows every feature and is
-itself a working example. Each note starts with front matter:
+Notes are written in **[notemark](https://github.com/SpencerWoolfson/notemark)** (private
+repo, also at `~/Desktop/Work/notemark`), our Markdown for mathematical writing: math,
+theorem environments, cross-references, Lean highlighting and strict checks. Its README is
+the language reference.
+
+Copy [`notes/example-note.md`](notes/example-note.md) to start: it uses every feature. Each
+note starts with front matter, which this site handles (notemark only sees the body):
 
 ```yaml
 ---
@@ -55,44 +61,21 @@ draft: true                                                       # optional; re
 ---
 ```
 
-- **Sections** start at `##`. (`#` is an error: the title is the page heading.)
-- **Math**: `$...$` inline, `$$ ... $$` on their own lines for display. Markdown never
-  touches what is inside the dollars. Write `\$` for a literal dollar sign.
-  Shared macros (`\ua`, `\U`, `\Set`, `\op`...) are in [`build/macros.mjs`](build/macros.mjs).
-- **Theorems**:
+The build fails with file and line on any notemark error, on bad front matter, or on a
+missing allowlisted file. Drafts never block publishing. Shared LaTeX macros for all notes
+are in [`build/macros.mjs`](build/macros.mjs).
 
-  ```markdown
-  :::theorem[Optional title]{#thm:some-id}
-  Statement.
-  :::
-  ```
+## How the site uses notemark
 
-  Also `lemma`, `proposition`, `corollary`, `conjecture`, `definition`, `example`,
-  `remark` (all numbered together) and `proof` (unnumbered).
-- **References**: `[](#thm:some-id)` becomes "Theorem 3", and stays right when
-  numbering changes. `[any text](#thm:some-id)` keeps your text.
-- **Code**: fenced blocks with a language, e.g. ` ```lean `, are highlighted.
-- GitHub-flavoured Markdown: tables, footnotes `[^1]`, strikethrough, task lists.
-
-The build **fails with file and line** on: invalid LaTeX, unknown `:::block`, references
-to missing ids, duplicate ids, `#` headings, and `$5 and $10`-style unescaped dollars.
-Drafts never block publishing.
-
-## Extending the Markdown
-
-The pipeline is in [`build/markdown.mjs`](build/markdown.mjs) (unified: remark → rehype).
-Our extensions are in [`build/extensions/`](build/extensions/), each a plugin that works on
-the syntax tree:
-
-| File | Does |
-|---|---|
-| `theorems.mjs` | `:::theorem` etc.: numbering, titles, ids |
-| `crossrefs.mjs` | `[](#id)` references |
-| `lint.mjs` | the checks above; puts back `word:word` text the directive parser grabbed |
-| `messages.mjs` | how extensions report errors and warnings |
-
-To add one: write the plugin, register it in `markdown.mjs` in the right place, and add
-tests to [`build/test/`](build/test/). Run `npm test` before pushing; CI runs it too.
+- `package.json` pins a tagged release: `"notemark": "github:SpencerWoolfson/notemark#v0.1.0"`.
+  To upgrade, tag a release in notemark, change the tag here, run `npm install`, commit.
+- To try unreleased notemark changes locally: `npm install ../notemark`, then put the
+  pinned version back (`npm install github:SpencerWoolfson/notemark#vX.Y.Z`) before committing.
+- GitHub Actions reads the private notemark repo with a read-only deploy key
+  (secret `NOTEMARK_DEPLOY_KEY` here; key "website CI (read-only)" on notemark).
+- Site-specific code stays here in [`build/`](build/): front matter and drafts
+  (`build.mjs`), page templates, Notes index and feed (`templates.mjs`), the published-file
+  allowlist (`config.mjs`), macros, and the dev server.
 
 ## Domain and hosting
 

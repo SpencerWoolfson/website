@@ -1,4 +1,4 @@
-// LaTeX macros available in every note, as KaTeX macro definitions.
+// LaTeX macros available in every note. The build passes these to notemark's compile().
 // Write the macro name with its backslash; the value is the expansion, with #1, #2... for arguments.
 //
 //   "\\Set": "\\mathbf{Set}",

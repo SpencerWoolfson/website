@@ -1,8 +1,8 @@
 // Builds the whole site into _site/:
 //   - copies the hand-written pages and assets listed in config.mjs (STATIC_FILES), nothing else
-//   - compiles every notes/*.md into _site/notes/<slug>/index.html
+//   - compiles every notes/*.md with notemark into _site/notes/<slug>/index.html
 //   - writes the Notes index (notes.html) and the Atom feed (feed.xml)
-//   - copies KaTeX's stylesheet and fonts (only the version the compiler uses)
+//   - copies KaTeX's stylesheet and fonts (the exact version notemark renders with)
 //
 // Usage:
 //   node build/build.mjs            published notes only (what goes live)
@@ -12,11 +12,11 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { createRequire } from "node:module";
 import matter from "gray-matter";
 
 import { ROOT, STATIC_FILES } from "./config.mjs";
-import { compileMarkdown } from "./markdown.mjs";
+import { compile, katexAssets } from "notemark";
+import { MACROS } from "./macros.mjs";
 import { notePage, notesIndexPage, atomFeed } from "./templates.mjs";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -65,7 +65,7 @@ async function loadNote(file, { relPath, drafts }) {
   const unknown = Object.keys(meta).filter((k) => !known.has(k));
   if (unknown.length) errors.push(`${relPath}  Unknown front matter field(s): ${unknown.join(", ")}. Allowed: ${[...known].join(", ")}.`);
 
-  const compiled = await compileMarkdown(parsed.content, { path: relPath, lineOffset });
+  const compiled = await compile(parsed.content, { path: relPath, lineOffset, macros: MACROS });
   return {
     note: {
       slug,
@@ -147,14 +147,12 @@ export async function build({
   // The feed only ever lists published notes, even in a drafts build.
   await fs.writeFile(path.join(outDir, "feed.xml"), atomFeed(notes.filter((n) => !n.draft)));
 
-  // 4. KaTeX stylesheet + fonts, from the exact KaTeX package rehype-katex renders with
-  const require = createRequire(import.meta.url);
-  const katexDist = path.join(path.dirname(require.resolve("katex/package.json")), "dist");
+  // 4. KaTeX stylesheet + fonts, from the exact KaTeX version notemark renders with
   const katexOut = path.join(outDir, "assets", "katex");
   await fs.mkdir(path.join(katexOut, "fonts"), { recursive: true });
-  await fs.copyFile(path.join(katexDist, "katex.min.css"), path.join(katexOut, "katex.min.css"));
-  for (const font of await fs.readdir(path.join(katexDist, "fonts"))) {
-    if (font.endsWith(".woff2")) await fs.copyFile(path.join(katexDist, "fonts", font), path.join(katexOut, "fonts", font));
+  await fs.copyFile(katexAssets.stylesheet, path.join(katexOut, "katex.min.css"));
+  for (const font of await fs.readdir(katexAssets.fontsDir)) {
+    if (font.endsWith(".woff2")) await fs.copyFile(path.join(katexAssets.fontsDir, font), path.join(katexOut, "fonts", font));
   }
 
   return { ok: true, errors, warnings, notes };

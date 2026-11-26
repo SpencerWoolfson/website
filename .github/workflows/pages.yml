@@ -28,6 +28,18 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      # notemark is a private repo. NOTEMARK_DEPLOY_KEY is a read-only deploy key that only
+      # gives access to SpencerWoolfson/notemark. The host key is GitHub's published one
+      # (https://api.github.com/meta), so the connection can't be redirected.
+      - name: Give git read access to notemark
+        env:
+          DEPLOY_KEY: ${{ secrets.NOTEMARK_DEPLOY_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/notemark && chmod 600 ~/.ssh/notemark
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > ~/.ssh/known_hosts
+          git config --global core.sshCommand "ssh -i ~/.ssh/notemark -o IdentitiesOnly=yes"
+          git config --global url."ssh://git@github.com/SpencerWoolfson/notemark".insteadOf "https://github.com/SpencerWoolfson/notemark"
       - run: npm ci
       - run: npm test
       - run: npm run build

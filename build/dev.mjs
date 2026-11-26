@@ -1,5 +1,6 @@
 // Local preview: builds with drafts, serves _site/ on http://localhost:8765,
-// and rebuilds whenever a note, page, stylesheet or the compiler changes.
+// and rebuilds whenever a note, page, stylesheet or build script changes.
+// (Changes to notemark itself need `npm install ../notemark`; see README.)
 // Reload the browser to see the result; build errors are printed here.
 //
 //   npm run dev
