@@ -16,3 +16,8 @@
 
 # Private master record: stays local, never committed
 Spencer_Woolfson_Master.md
+
+
+# Notes compiler: dependencies and build output
+node_modules/
+_site/
