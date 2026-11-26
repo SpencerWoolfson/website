@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node build/build.mjs",
     "dev": "node build/dev.mjs",
-    "test": "node --test build/test/"
+    "test": "node --test \"build/test/*.test.mjs\""
   },
   "dependencies": {
     "@shikijs/rehype": "4.6.0",
