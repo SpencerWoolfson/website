@@ -23,7 +23,7 @@ Then open http://localhost:8765.
 
 ## Still to do before going live
 
-- [ ] Save the portrait as `photo.jpg` here and point `index.html` at it (it still loads from the WordPress site).
+- [x] Save the portrait as `photo.jpg` here and point `index.html` at it (resized to 600×800, location metadata stripped).
 - [ ] Put the folder on GitHub and turn on GitHub Pages.
 - [ ] Point spencerwoolfson.com's DNS (managed at WordPress.com) at GitHub Pages.
 - [ ] Only after the new site is live: stop the WordPress.com plan from renewing, keep the domain.
